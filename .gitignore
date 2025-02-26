@@ -208,18 +208,9 @@ output/
 dist/
 .cache/
 
-# Ignore everything by default
-*
+# Include everything by default
+!*
 
-# Include .gitignore and README.md explicitly
-!.gitignore
-!README.md
-
-
-# Include Python Files 01-tiny-projects
-
-
-
-### Ignore any file or folder that contains 'exclude' in its name
-*omit*
-**/*omit*
+# Explicitly ignore files/folders starting with "exclude-sync-"
+exclude-sync-*
+**/exclude-sync-*
