@@ -1,0 +1,148 @@
+---
+
+- name: Playbook for Configuring OPS Workload
+  hosts: vbfedops01
+  become: yes
+  gather_facts: true
+
+  vars_files:
+
+    - vars/exclude-common-vars.yml
+    - vars/common-vars.yml
+    - vars/dicts-db.yml
+
+  roles:
+  
+    ### COMMON CONFIGURATION
+
+    # - 028-ping
+    # - 178-timestamp
+    # - 081-groups-creation
+    # - { role: 129-directories-ops, ops: 'create', directories_list: '{{ directories_to_create }}' }
+    # - { role: 169-system-bkp, sos_backup: "no"  }
+    # - 079-users-creation
+    # - 060-machine-id
+    # - 063-set-hostname
+    # - 057-set-timezone
+    # - 066-etc-hosts
+    # - 084-sudo-priv-group
+    # - 078-ssh-user-key
+    # - 034-chronyd-config
+    # - { role: 131-symbolic-link, ops: 'link', symbolic_links: '{{ symbolic_links_to_create }}' }
+    # - 088-sysctl-parms
+    # - 073-bash-history-control
+    - 032-default-route-temporary
+    # - { role: 070-package-ops, pkg_list: "{{ packages['pkgs_to_remove'] }}", ops: "absent" }
+    # - { role: 070-package-ops, pkg_list: "{{ packages['pkgs_to_install'] }}", ops: "present" }
+    # - { role: 167-service-ops, ops: "stopanddisable" }
+    # - { role: 167-service-ops, ops: "startandenable" }
+    # - { role: 116-mount-ops, ops: "unmount", dir_list: "{{ immutable_dirs }}" }
+    # - 134-chattr
+    # - { role: 088-reboot-server-async, job_name: "reboot-server-first-run" }
+    # - { role: 015-wait-for-ssh, job_name: "wait-for-ssh-first-run" }
+    # - { role: 181-system-uptime, job_name: "system-uptime-first-run" }
+
+    # vbfedops01 VM SNAPSHOT > TILL-NFTABLES-SSH-ALLOW-ONLY > ALL THE ABOVE ROLES ARE EXECUTED
+    # - 161-shutdown-server-async
+
+
+
+### Linux OS Hardening 
+
+    # - { role: 053-firewall-ops, firewall_state: "disabled"}
+
+
+    # vbfedops01 VM SNAPSHOT > TILL-NFTABLES-SSH-ALLOW-ONLY > ALL THE ABOVE ROLES ARE EXECUTED
+    - 005-nftables
+    # - 064-selinux-ops
+    # - 056-root-disable
+    # - 008-set-future
+    # - 014-tmp-partition-flags
+    # - 018-logrotate-configs
+    # - 022-ssh-allow-users
+    # - 028-var-log-perm-fix
+    # - 038-audit-priv-rules
+    # - 040-passwd-unix-so
+    # - 051-enable-audit-svc
+    # - 059-set-dir-perms
+    # - 060-set-file-perms
+    # - 065-banner-config
+    # - 075-journal-compress
+    # - 088-sysctl-parms
+    # - 094-world-writable-dirs
+    # - 099-custom-audit-report
+    # - 009-unset-future
+
+ 
+
+### Reference lab-environment
+
+    # - 021-labvms-aapstop
+    # - 020-vm-shared-folders
+    # - 021-labvms-filter-vmxpaths
+    # - 021-labvms-start
+    # - 021-labvms-takesnap
+    # - 021-labvms-delsnap
+    # - 021-labvms-revsnap
+    # - 021-labvms-stop
+    # - 021-labvms-lssnap
+    # - 021-labvms-pause
+    # - 021-labvms-dbstop
+    # - 021-labvms-laboff
+    # - 021-labvms-dbfailover
+    # - 021-labvms-aapstart
+    # - 021-labvms-dbstart
+
+### Reference linux-os-apps
+
+    # - 004-python-environment
+
+### Reference linux-os-build
+
+    # - 178-timestamp
+    # - 169-system-bkp
+    # - 028-ping
+    # - 060-machine-id
+    # - 063-set-hostname
+    # - 034-chronyd-config
+    # - 057-set-timezone
+    # - 030-multi-interface-configuration
+    # - 207-firewall-enable-disable
+    # - 005-new-ip-set-fact
+    # - 008-new-user-set-fact
+    # - 058-redhat-cdn-registration
+    # - 171-system-full-update
+    # - 073-bash-history-control
+    # - 081-groups-creation
+    # - 084-sudo-priv-group
+    # - 079-users-creation
+    # - 134-chattr
+    # - 088-reboot-server-async
+    # - 015-wait-for-ssh
+    # - 161-shutdown-server-async
+    # - 032-default-route-temporary
+    # - 065-etc-populate-inventory-hosts
+    # - 012-adhoc-command
+    # - 136-files-ops
+    # - 078-ssh-user-key
+    # - 129-directories-ops
+    # - 165-custom-startup-service
+    # - 167-service-ops
+    # - 131-symbolic-link
+    # - 083-root-enable
+    # - 128-files-creation
+    # - 177-get-date-time
+    # - 181-system-uptime
+    # - 068-yum-repo-config
+    # - 116-mount-ops
+    # - 066-etc-hosts
+    # - 070-package-ops
+    # - 001-ANSIBLE
+    # - 026-NETWORKING
+    # - 076-AUTHENTICATION
+    # - 051-BASIC-CONFIG
+    # - 101-STORAGE
+    # - 126-FILES-FOLDERS
+    # - 151-SYSTEM-MGMT
+    # - 176-INFO
+    # - 201-SECURITY

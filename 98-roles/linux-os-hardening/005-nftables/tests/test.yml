@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - /links/ansible_roles/linux-os-hardening/005-nftables

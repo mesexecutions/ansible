@@ -1,0 +1,10 @@
+/var/log/boot.log
+{
+    missingok
+    daily
+    copytruncate
+    rotate 7
+    create 0600 root root
+    notifempty
+    maxage 365
+}

@@ -214,3 +214,9 @@ dist/
 # Explicitly ignore files/folders starting with "exclude-sync-"
 exclude-sync-*
 **/exclude-sync-*
+
+# Ignore Ansible Configurations
+ansible.cfg
+ansible.log
+**/ansible.cfg
+**/ansible.log

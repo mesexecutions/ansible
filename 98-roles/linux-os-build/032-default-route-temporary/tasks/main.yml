@@ -1,0 +1,19 @@
+---
+# tasks file for 016-default-route-temporary
+
+- name: Check if Route Exists
+  ansible.builtin.shell:
+    cmd: "ip route list | grep {{ interfaces[0]['gateway'] }}"
+  register: route_status
+  failed_when: false    # Ensure the task doesn't fail for a non-zero exit code
+
+
+- name: Display Message
+  ansible.builtin.debug:
+    msg: "ROUTE ALREADY EXISTS"
+  when: route_status.stdout != ''
+
+- name: Adding Temporary Default Route 
+  ansible.builtin.shell:
+    cmd: "route add default gw {{ interfaces[0]['gateway'] }} dev {{ interfaces[0]['interface_name'] }}"
+  when: route_status.stdout == ''

@@ -1,0 +1,13 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/038-audit-priv-rules
+
+
+- name: Generating Auditing Rules
+  script: scripts/rules.sh
+
+- name: Setting Permission on /etc/audit/rules.d/audit-hardening.rules
+  file:
+    path: /etc/audit/rules.d/audit-hardening.rules
+    owner: root
+    group: root
+    mode: 0600

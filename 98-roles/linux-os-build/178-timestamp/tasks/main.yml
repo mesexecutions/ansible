@@ -1,0 +1,6 @@
+---
+# tasks file for ../../00_roles/linux-os-build/003-timestamp
+
+- name: Generating Timestamp
+  ansible.builtin.shell: "date +%Y%m%d%H%M%S"
+  register: timestamp

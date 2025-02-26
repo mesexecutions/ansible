@@ -1,0 +1,24 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/028-take-vwsnapshot
+#
+- name: Gather Facts for Timestamp
+  ansible.builtin.setup:
+    filter: 'ansible_date_time'
+
+- name: Genrating TimeStamp
+  ansible.builtin.set_fact:
+    timestamp: "{{ ansible_date_time.date }}{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}"
+
+- name: Generating Snapshot Name
+  ansible.builtin.set_fact:
+    new_snapshot_name: "CheckPoint_{{ timestamp | regex_replace('[-:]', '') }}"
+
+- name: Take the Snapshot of the VM's
+  ansible.builtin.shell:
+    cmd: "vmrun -T ws snapshot {{ vmpath }} {{ new_snapshot_name }}"
+  loop: "{{ vmx_paths }}"
+  loop_control:
+    loop_var: vmpath
+    pause: "{{ sleep_time }}"
+  async: 300
+  poll: 0

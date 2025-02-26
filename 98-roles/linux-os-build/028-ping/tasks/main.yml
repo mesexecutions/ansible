@@ -1,0 +1,6 @@
+---
+# tasks file for roles/ping
+
+- name: Printing Hostname and IP Address
+  ansible.builtin.debug:
+    msg: "{{ ansible_hostname }} {{ ansible_all_ipv4_addresses }}"

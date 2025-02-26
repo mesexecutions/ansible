@@ -1,0 +1,92 @@
+sysinfo:
+
+    servername: 'vbfedops01'
+    timezone_location: 'Asia/Singapore'
+    fqdn_suffix: '.orktion.net'
+
+host_octet: '231'
+
+interfaces:
+
+  - name: natted
+    default_route: 'False'
+    interface_name: 'enp0s3'
+    ip: '10.10.4.{{ host_octet }}' 
+    subnet: '24'
+    gateway: '10.10.4.1'
+    dns1: '10.10.4.1'
+    dns2: '4.2.2.2'
+
+  - name: bridged
+    default_route: 'False'
+    interface_name: 'enp0s8'
+    ip: '192.168.1.{{ host_octet }}' 
+    subnet: '24'
+    gateway: '192.168.1.254'
+    dns1: '192.168.1.254'
+    dns2: '4.2.2.2'
+
+
+dateandtime:
+
+    linetodelete: '^pool 2\.fedora\.pool\.ntp\.org iburst$'
+    linetoadd: 'server vbfedhub01.orktion.net iburst'
+    timezone_location: 'Asia/Singapore'
+
+packages:
+
+  pkgs_to_remove: 
+
+      - cockpit-bridge
+      - cockpit-system
+      - cockpit-networkmanager
+      - cockpit-selinux
+      - cockpit-storaged
+      - cockpit-packagekit
+      - cockpit-ws
+      - cockpit
+  
+  pkgs_to_install:
+
+      - nftables
+      - ansible
+
+services:
+
+  svc_to_stop:
+
+    - cockpit-wsinstance-http.service
+    - cockpit-wsinstance-http.socket
+    - cockpit-wsinstance-https-factory.socket
+    - cockpit.socket
+    - cockpit-motd.service
+    - cockpit.service
+    - firewalld
+
+  svc_to_start:
+
+    - nftables
+
+
+# // Disabled Below, As Planning to Use Execution Environments
+  
+# ### APP DEPLOYMENTS  
+
+# python:
+
+#   versions:
+
+#     - python3.6
+#     - python3.7
+#     - python3.8
+#     - python3.9
+#     - python3.10
+#     - python3.11
+#     - python3.12
+
+#   virtual_environments:
+
+#     python3.6: 'py306ans211'
+
+#   base_path: '/home/linadmin/pyvenv'
+

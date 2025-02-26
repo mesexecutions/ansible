@@ -1,0 +1,28 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/099-custom-audit-report
+
+
+- name: Copy audit.sh to Target
+  copy:
+      src: scripts/audit.sh
+      dest: /root/audit.sh
+      force: yes
+      mode: 0550
+      owner: root
+      group: root
+  become: yes
+
+- name: Running Auditing Script
+  shell: "/root/audit.sh > /tmp/{{ ansible_nodename }}.html"
+  become: yes
+
+- name: Copy HTML File from TARGET to ANSIBLE 
+  fetch:
+    src: "/tmp/{{ ansible_nodename }}.html"
+    dest: audit_output/
+    flat: yes 
+
+- name: Delete HTML File
+  file:
+    path: "/tmp/{{ ansible_nodename }}.html"
+    state: absent

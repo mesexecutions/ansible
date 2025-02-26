@@ -1,0 +1,11 @@
+---
+# tasks file for 98-roles/linux-os-build/042-etc-hosts
+
+- name: Copy the HOSTS file based on Virtualization Platform
+  ansible.builtin.copy:
+    src: '/storage/my_drive/data_backups/lab/linux_configs/vb-all-etc-hosts'
+    dest: '/etc/hosts'
+    owner: root
+    group: root
+    mode: 0644
+  when: 'ansible_virtualization_type == "virtualbox"'

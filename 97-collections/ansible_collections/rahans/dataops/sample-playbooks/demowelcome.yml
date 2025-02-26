@@ -1,0 +1,17 @@
+---
+
+- name: Playbook to Demonstrate Module demowelcome
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Python Module Welcome
+      rahans.dataops.demowelcome:
+        name: "Ramesh"
+      register: pymodule_response
+
+    - name: Display the Result of the Above Module
+      ansible.builtin.debug:
+        msg: "{{ pymodule_response }}"

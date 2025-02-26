@@ -1,0 +1,41 @@
+---
+# tasks file for roles/yum-system-update
+
+- name: Fetch Facts
+  ansible.builtin.setup:
+    filter:
+      - 'ansible_distribution_version'
+      - 'ansible_kernel'
+      - 'ansible_distribution'
+
+- name: Setting Fact before System Update
+  ansible.builtin.set_fact:
+    before_update: "{{ ansible_distribution_version }}, {{ ansible_kernel }}"
+
+- name: Update All Packages to Latest on RHEL
+  ansible.builtin.dnf:
+    name: '*'
+    state: latest
+  when:
+    ansible_distribution == "RedHat" or  ansible_distribution == "Fedora"
+
+- name: SLES
+  ansible.builtin.zypper:
+    name: "*"
+    state: latest
+  when:
+    ansible_distribution == "SUSE"
+
+- name: Fetch Facts
+  ansible.builtin.setup:
+    filter:
+      - 'ansible_distribution_version'
+      - 'ansible_kernel'
+
+- name: Setting Fact after System Update
+  ansible.builtin.set_fact:
+    after_update: "{{ ansible_distribution_version }}, {{ ansible_kernel }}"
+
+- name: Before and After Update Changes
+  ansible.builtin.debug:
+    msg: "Before: {{ before_update }} After: {{ after_update }}"

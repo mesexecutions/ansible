@@ -1,0 +1,22 @@
+---
+# tasks file for 018-etc-populate-inventory-hosts
+
+- name: Initialize Host Entries List
+  ansible.builtin.set_fact:
+    etc_hosts: []
+  run_once: true
+  delegate_to: localhost
+
+- name: Adding Host Entry in /etc/hosts
+  ansible.builtin.set_fact:
+    etc_hosts: "{{ etc_hosts + [{'hostname': item, 'ip': hostvars[item]['ansible_host']}] }}"
+  loop: "{{ groups[hostgroup] }}"
+  run_once: true
+  delegate_to: localhost
+
+- name: Looping List
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }} {{ item.hostname }} {{ item.hostname}}{{ sysinfo['fqdn_suffix'] }}"
+    backup: yes
+  loop: "{{ etc_hosts }}"

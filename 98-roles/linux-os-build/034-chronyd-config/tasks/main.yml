@@ -1,0 +1,23 @@
+---
+# tasks file for roles/chronyd-config
+
+- name: Remove "{{ dateandtime['linetodelete'] }}" from /etc/chrony.conf
+  ansible.builtin.lineinfile:
+    path: /etc/chrony.conf
+    regexp: "{{ dateandtime['linetodelete'] }}"
+    state: absent
+
+- name: Add  "{{ dateandtime['linetoadd'] }}" in /etc/chrony.conf
+  ansible.builtin.blockinfile:
+    path: /etc/chrony.conf
+    insertafter: '^# Please consider'
+    block: | 
+      #
+      # NTP Server Added by Ansible
+      {{ dateandtime['linetoadd'] }}
+
+- name: Enable and Start Chronyd Service
+  ansible.builtin.systemd:
+    name: chronyd
+    state: restarted
+    enabled: yes

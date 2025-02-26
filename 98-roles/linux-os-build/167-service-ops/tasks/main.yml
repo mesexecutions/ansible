@@ -1,0 +1,29 @@
+---
+# tasks file for /links/computing/devops_automation/ansible/02_roles/linux-os-build/077-service-ops
+
+- name: Enable and Start the Service
+  ansible.builtin.systemd:
+    name: "{{ service_name }}"
+    daemon_reload: true
+    enabled: yes
+    state: started
+  with_items:
+    - "{{ services['svc_to_start'] }}"
+  loop_control:
+    loop_var: service_name
+  when: ops == "startandenable"
+  failed_when: false
+
+
+- name: Disable and Stop the Service
+  ansible.builtin.systemd:
+    name: "{{ service_name }}"
+    daemon_reload: true
+    enabled: no
+    state: stopped
+  with_items:
+    - "{{ services['svc_to_stop'] }}"
+  loop_control:
+    loop_var: service_name
+  when: ops == "stopanddisable"
+  failed_when: false

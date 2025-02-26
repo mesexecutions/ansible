@@ -1,0 +1,11 @@
+---
+# tasks file for /links/ansible_roles/linux-os-build/021-get-date-time
+
+- name: Get Current Date and Time
+  ansible.builtin.shell:
+    cmd: date
+  register: dateoutput
+
+- name: Display Date and Time
+  ansible.builtin.debug:
+    msg: "{{ dateoutput.stdout }}"

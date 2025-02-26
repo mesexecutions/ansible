@@ -1,0 +1,10 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/094-world-writable-dirs
+
+- name: Find World-Writable Directories
+  command: find /tmp -perm -0002 -a -perm 1000 -type d -print
+  register: world_writable_directories
+
+- name: Print List of Directories
+  debug:
+    msg: "{{ world_writable_directories.stdout }}"

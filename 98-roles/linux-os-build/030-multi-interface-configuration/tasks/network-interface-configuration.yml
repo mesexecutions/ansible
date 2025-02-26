@@ -1,0 +1,66 @@
+---
+# tasks file for roles/interface-configuration
+
+- name: Generate Network Interace UUID
+  ansible.builtin.shell:
+    cmd: "uuidgen ifcfg-{{ interface.interface_name }}"
+  register: interface_uuid
+
+- name: Setting Network Parameters
+  set_fact:
+    default_route: "{{ interface.default_route }}"
+    interface_name: "{{ interface.interface_name }}"
+    ipaddr: "{{ interface.ip }}"
+    subnet: "{{ interface.subnet }}"
+    gw_ip: "{{ interface.gateway }}"
+    uuid: "{{ interface_uuid.stdout }}"
+    dns_1: "{{ interface.dns1 }}"
+    dns_2: "{{ interface.dns2 }}"
+
+- name: Creating Interface Configuration using JINJA2 Temlate for on RHEL Variant
+  ansible.builtin.template:
+    src: templates/interface_config_static.jinja2
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ interface.interface_name }}"
+  when: ansible_distribution_file_variety == "RedHat"
+
+- name: Taking Backup of the Static Interace Configuration on RHEL Variant 
+  ansible.builtin.copy:
+    src: "/etc/sysconfig/network-scripts/ifcfg-{{ interface.interface_name }}"
+    dest: "/etc/sysconfig/network-scripts/bkp-static-ifcfg-{{ interface.interface_name }}"
+    remote_src: yes
+  when: ansible_distribution_file_variety == "RedHat"
+
+- name: Create DHCP Network Interface Configuration on RHEL Variant 
+  ansible.builtin.copy:
+    src: templates/interface_config_dhcp.jinja2
+    dest: "/etc/sysconfig/network-scripts/bkp-dhcp-ifcfg-{{ interface.interface_name }}"
+  when: ansible_distribution_file_variety == "RedHat"
+
+- name: Creating Static Interface Configuration using JINJA2 Temlate for SLES Distributions
+  ansible.builtin.template:
+    src: templates/interface_config_static.jinja2
+    dest: "/etc/sysconfig/network/ifcfg-{{ interface.interface_name }}"
+  when: ansible_distribution == "SLES"
+
+- name: Taking Backup of the Interace Configuration on SLES
+  ansible.builtin.copy:
+    src: "/etc/sysconfig/network/ifcfg-{{ interface.interface_name }}"
+    dest: "/etc/sysconfig/network/bkp-static-ifcfg-{{ interface.interface_name }}"
+    remote_src: yes
+  when: ansible_distribution == "SLES"
+
+- name: Creating DHCP Interface Configuration using JINJA2 Temlate for SLES Distributions
+  ansible.builtin.template:
+    src: templates/interface_config_dhcp.jinja2
+    dest: "/etc/sysconfig/network/bkp-dhcp-ifcfg-{{ interface.interface_name }}"
+  when: ansible_distribution == "SLES"
+
+- name: Name Servers Configuration on SLES Servers
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/network/config
+    search_string: 'NETCONFIG_DNS_STATIC_SERVERS=""'
+    line: 'NETCONFIG_DNS_STATIC_SERVERS="{{ interfaces[0]["gateway"] }} {{ dns_2 }}"'
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution == "SLES"

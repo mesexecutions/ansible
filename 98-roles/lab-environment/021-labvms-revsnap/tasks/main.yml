@@ -1,0 +1,12 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/031-revert-vwsnapshot
+#
+- name: Revert Snapshot
+  ansible.builtin.shell:
+    cmd: "vmrun -T ws revertToSnapshot {{ vmpath }} {{ snapshot_name_to_revert }}"
+  loop: "{{ vmx_paths }}"
+  loop_control:
+    loop_var: vmpath
+    pause: "{{ sleep_time }}"
+  async: 300
+  poll: 0

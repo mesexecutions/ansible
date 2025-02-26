@@ -1,0 +1,83 @@
+operations realted to mulithub services like
+
+if you need git to be active, it will start git only sevices, others services will be stopeed
+
+
+like -e "start-git,stop-dns,start-monitoring"
+
+### install python packages and othe rpakcages 
+
+
+  22  sudo dnf install python
+   26  sudo dnf install python2
+   30  sudo dnf install python36
+   33  sudo dnf install python38
+   34  sudo dnf install python39
+   35  sudo dnf install python3.11
+   37  sudo dnf install python3.10
+   39  sudo dnf install python3.16
+  122  sudo dnf search python3.10
+  123  sudo dnf search python310
+  125  sudo dnf search pip
+  126  sudo dnf install python3.11-pip
+  136  sudo dnf search python
+  138  sudo dnf install python3
+  154  sudo dnf install podman
+  155  sudo dnf install  java-17-openjdk
+
+  git dnf install
+
+
+rwxrwxrwx. 1 root root    9 Nov 18 08:06 /usr/bin/python2 -> python2.7
+-rwxr-xr-x. 1 root root 8024 Nov 18 08:06 /usr/bin/python2.7
+lrwxrwxrwx. 1 root root   25 Feb 12 15:06 /usr/bin/python3 -> /etc/alternatives/python3
+-rwxr-xr-x. 1 root root 7744 Oct 26 00:23 /usr/bin/python3.11
+lrwxrwxrwx. 1 root root   31 Nov  9  2021 /usr/bin/python3.6 -> /usr/libexec/platform-python3.6
+lrwxrwxrwx. 1 root root   32 Nov  9  2021 /usr/bin/python3.6m -> /usr/libexec/platform-python3.6m
+-rwxr-xr-x. 1 root root 7768 Aug 11  2023 /usr/bin/python3.8
+-rwxr-xr-x. 1 root root 7768 Nov 18 09:02 /usr/bin/python3.9
+[linadmin@vbrkyops01 ~]$
+
+
+### install various python virtual enviernsmets 
+
+   42  python2 -m pip install virtualenv
+   46  sudo python2 -m pip install virtualenv
+   75  sudo python3.6 -m pip install virtualenv
+   95  sudo python3.8 -m pip install virtualenv
+  112  sudo python3.9 -m pip install virtualenv
+  127  sudo python3.11 -m pip install virtualenv
+
+
+
+### Create python virtual environments
+
+  56  python2 -m virtualenv py271-ans2927
+   58  python2 -m virtualenv py271-ans210
+   62  python2 -m virtualenv py271-ans211
+   74  python3.6 -m virtualenv py271-ans211
+   77  python3.6 -m virtualenv py368-ans29
+   79  python3.6 -m virtualenv py368-ans2927
+   82  python3.6 -m virtualenv py368-ans211
+   90  python3.6 -m virtualenv py368-ans210
+   97  python3.8 -m virtualenv py381-ans213
+  113  python3.9 -m virtualenv py39-ans214
+  116  python3.9 -m virtualenv py39-ans215
+  128  python3.11 -m virtualenv py311-ans216
+
+
+pyvenv/py27-ans210
+pyvenv/py27-ans211
+pyvenv/py27-ans292
+pyvenv/py311-ans216
+pyvenv/py36-ans210
+pyvenv/py36-ans211
+pyvenv/py36-ans292
+pyvenv/py38-ans213
+pyvenv/py39-ans214
+pyvenv/py39-ans215
+
+
+# JDK BASH RC
+
+echo 'export JAVA_HOME=/usr/lib/jvm/jre-17-openjdk' >> ~/.bashrc

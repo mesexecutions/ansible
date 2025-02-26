@@ -1,0 +1,15 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/008-set-future
+
+- name: Set FUTURE or FIPS
+  shell:
+    cmd: update-crypto-policies --set FUTURE
+
+- name: Reading File /etc/crypto-policies/config
+  shell:
+    cmd: cat /etc/crypto-policies/config
+  register: crypto_value
+
+- name: Display Current Cyrpto Policy
+  debug:
+    var: crypto_value.stdout

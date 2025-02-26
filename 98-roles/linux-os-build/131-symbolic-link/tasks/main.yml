@@ -1,0 +1,17 @@
+---
+# tasks file for /links/computing/devops_automation/ansible/02_roles/linux-os-build/131-symbolic-link
+
+- name: Create Symbolic Links
+  ansible.builtin.file:
+    src: "{{ item.target }}"
+    dest: "{{ item.link_name }}"
+    state: link
+  with_items: "{{ symbolic_links_to_create }}"
+  when: symbolic_links_to_create is defined and item.link_name is defined
+
+- name: Delete Symbolic Links
+  ansible.builtin.file:
+    path: "{{ item.link_name }}"
+    state: absent
+  with_items: "{{ symbolic_links_to_delete }}"
+  when: symbolic_links_to_delete is defined and item.link_name is defined

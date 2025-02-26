@@ -1,0 +1,13 @@
+---
+# tasks file for /links/computing/devops_automation/ansible/02_roles/linux-os-build/056-ssh-user-key
+#
+- name: Authorized Key for "{{ ssh_user }}" 
+  ansible.posix.authorized_key:
+     user: "{{ ssh_user.name }}"
+     state: present
+     manage_dir: 'yes'
+     key: "{{ ssh_user.key }}"
+  loop: "{{ ssh_user_keys }}"
+  loop_control: 
+    loop_var: ssh_user
+

@@ -1,0 +1,32 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/018-logrotate-configs
+
+
+- name: Take Backup of Logrotate Files
+  shell:
+      cmd: "tar -zcvf /root/ansible_backup/logrotate_{{ timestamp.stdout }}.tar.gz /etc/logrotate.d/"
+
+- name: Find Files in Files/Logrotate
+  delegate_to: localhost
+  find:
+    paths: "{{ logrotate_config_files }}"
+    file_type: file
+  register: files_output
+
+- name: Copy Logrotate.d Config Files
+  copy:
+    src: "{{ item.path }}"
+    dest: "/etc/logrotate.d/"
+    force: yes
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ files_output.files}}"
+
+- name: Set Permissions on Named
+  file:
+    path: /etc/logrotate.d/named
+    owner: root
+    group: named
+    mode: 0644
+  ignore_errors: yes

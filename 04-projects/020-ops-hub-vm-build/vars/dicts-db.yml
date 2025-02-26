@@ -1,0 +1,68 @@
+---
+
+vwvms:
+  - vmname: VWAAPOCON01
+    path: '/storage/spare/vms/infra/aap38/VWAAPOCON01/VWAAPOCON01.vmx'
+  - vmname: VWAAPOCON02
+    path: '/storage/vd1/vms/infra/aap38/VWAAPOCON02/VWAAPOCON02.vmx'
+  - vmname: VWAAPOCON03
+    path: '/storage/vd2/vms/infra/aap38/VWAAPOCON03/VWAAPOCON03.vmx'
+  - vmname: VWAAPOLDB01
+    path: '/storage/vd3/vms/infra/aap38/VWAAPOLDB01/VWAAPOLDB01.vmx'
+  - vmname: VWAAPOLDB02
+    path: '/storage/vd4/vms/infra/aap38/VWAAPOLDB02/VWAAPOLDB02.vmx'
+  - vmname: VWAAPOHUB01
+    path: '/storage/vd5/vms/infra/aap38/VWAAPOHUB01/VWAAPOHUB01.vmx'
+  - vmname: VWMULHUB01
+    path: '/storage/vd3/vms/infra/VWMULHUB01/VWMULHUB01.vmx'
+
+
+mount_devices_list:
+  - name: rhel89isobinary
+    mount_dir: '/media/'
+    mount_path: '/storage/disposable_data/os_images/rhel-8.9-x86_64-dvd.iso'
+
+  - name: rhel82isobinary
+    mount_dir: '/media/'
+    mount_path: '/storage/disposable_data/os_images/rhel-8.2-x86_64-dvd.iso'
+
+  - name: rheldvd
+    mount_dir: '/media/'
+    mount_path: '/storage/disposable_data/os_images/rhel-8.2-x86_64-dvd.iso'
+    
+
+repo_list:
+  - name: "rhel82-iso-binary-baseos"
+    baseurl: "/media/rhel82isobinary/BaseOS"
+    filename: "isorepos"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+
+  - name: "rhel82-iso-binary-aap"
+    baseurl: "/media/rhel82isobinary/AppStream"
+    filename: "isorepos"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+
+  - name: "rhel89-iso-binary-baseos"
+    baseurl: "/media/rhel89isobinary/BaseOS"
+    filename: "isorepos"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+
+  - name: "rhel89-iso-binary-aap"
+    baseurl: "/media/rhel89isobinary/AppStream"
+    filename: "isorepos"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+
+  - name: "rhel-8-for-x86_64-appstream-rpms"
+    baseurl: "https://cdn.redhat.com/content/dist/rhel8/8.2/x86_64/appstream/os"
+    filename: "redhat"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+
+  - name: "rhel-8-for-x86_64-baseos-rpms"
+    baseurl: "https://cdn.redhat.com/content/dist/rhel8/8.2/x86_64/baseos/os"
+    filename: "redhat"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+
+  - name: "codeready-builder-for-rhel-8-x86_64-rpms"
+    baseurl: "https://cdn.redhat.com/content/dist/rhel8/8.9/x86_64/codeready-builder/os"
+    filename: "redhat"
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"

@@ -1,0 +1,10 @@
+---
+# tasks file for 98-roles/linux-os-build/057-package-ops
+
+- name: Install/Remove the Packages on RHEL/FEDORA
+  ansible.builtin.dnf:
+    name: "{{ pkg_list }}"
+    state: "{{ ops }}"
+  when: ansible_distribution == "Fedora" or 
+        ansible_distribution == "RedHat" 
+  ignore_errors: true

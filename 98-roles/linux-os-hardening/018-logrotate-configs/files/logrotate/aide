@@ -1,0 +1,11 @@
+/var/log/aide/*.log {
+        weekly
+        missingok
+        rotate 4
+        create 0600 root root
+        compress
+        delaycompress
+        copytruncate
+        minsize 100k
+        maxage 365
+}

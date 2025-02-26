@@ -1,0 +1,8 @@
+/var/log/hawkey.log {
+    missingok
+    notifempty
+    rotate 4
+    weekly
+    create 0640 root root
+    maxage 365
+}

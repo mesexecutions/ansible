@@ -1,0 +1,26 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/060-set-file-perms
+
+- name: Set File Permissions
+  file:
+    state: file
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: '/etc/crontab', mode: '0600', owner: 'root', group: 'root'}
+    - { path: '/etc/ssh/sshd_config', mode: '0600', owner: 'root', group: 'root'}
+    - { path: '/etc/gshadow-', mode: '0000', owner: 'root', group: 'root'}
+    - { path: '/etc/gshadow', mode: '0000', owner: 'root', group: 'root'}
+    - { path: '/etc/group-', mode: '0000', owner: 'root', group: 'root'}
+    - { path: '/etc/group', mode: '0640', owner: 'root', group: 'root'}
+    - { path: '/etc/shadow-', mode: '0000', owner: 'root', group: 'root'}
+    - { path: '/etc/shadow', mode: '0000', owner: 'root', group: 'root'}
+    - { path: '/etc/passwd-', mode: '0000', owner: 'root', group: 'root'}
+    - { path: '/etc/passwd-', mode: '0640', owner: 'root', group: 'root'}
+    - { path: '/etc/issue', mode: '0644', owner: 'root', group: 'root'}
+    - { path: '/etc/issue.net', mode: '0644', owner: 'root', group: 'root'}
+    - { path: '/etc/motd', mode: '0644', owner: 'root', group: 'root'}
+
+    

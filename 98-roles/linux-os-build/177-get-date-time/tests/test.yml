@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - /links/ansible_roles/linux-os-build/021-get-date-time

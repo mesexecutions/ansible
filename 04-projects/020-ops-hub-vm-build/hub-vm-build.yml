@@ -1,0 +1,42 @@
+---
+
+- name: Playbook for Configuring OPS Workload
+  hosts: vbfedhub01
+  become: yes
+  gather_facts: true
+
+  vars_files:
+
+    - vars/exclude-common-vars.yml
+    - vars/common-vars.yml
+    - vars/dicts-db.yml
+
+  roles:
+
+
+  ### COMMON CONFIGURATION
+
+    # - 028-ping
+    # - 178-timestamp
+    # - 081-groups-creation
+    # - { role: 129-directories-ops, ops: 'create', directories_list: '{{ directories_to_create }}' }
+    # - { role: 169-system-bkp, sos_backup: "no"  }
+    # - 079-users-creation
+    # - 060-machine-id
+    # - 063-set-hostname
+    # - 057-set-timezone
+    # - 066-etc-hosts
+    # - 084-sudo-priv-group
+    # - 078-ssh-user-key
+    # - 034-chronyd-config
+    # - { role: 131-symbolic-link, ops: 'link', symbolic_links: '{{ symbolic_links_to_create }}' }
+    # - 088-sysctl-parms
+    # - 073-bash-history-control
+    # - 032-default-route-temporary
+    # - { role: 167-service-ops, ops: "stopanddisable" }
+    # - { role: 070-package-ops, ops: "absent" }  # absent, lastest, present
+    # - 134-chattr
+    # - { role: 207-firewall-enable-disable, firewall_status: "active" } # active | inactive
+    # - { role: 088-reboot-server-async, job_name: "reboot-server-first-run" }
+    # - { role: 015-wait-for-ssh, job_name: "wait-for-ssh-first-run" }
+    - { role: 181-system-uptime, job_name: "system-uptime-first-run" }

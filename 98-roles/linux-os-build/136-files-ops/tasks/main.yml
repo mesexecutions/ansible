@@ -1,0 +1,21 @@
+---
+# tasks file for 010-files-ops
+
+- name: Copy the File 
+  ansible.builtin.copy:
+    src: "{{ srcfile }}"
+    dest: "{{ destfile }}"
+    force: yes
+    mode: "{{ perm_mode }}"
+    owner: "{{ perm_owner }}"
+    group: "{{ perm_group }}"
+  when: fileops == "copy"
+
+- name: Remove the Files
+  ansible.builtin.file:
+    path: "{{ filepath }}"
+    state: absent
+  loop: "{{ filepaths }}"
+  loop_control:
+    loop_var: filepath
+  when: fileops == "remove"

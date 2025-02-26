@@ -1,0 +1,11 @@
+---
+# tasks file for 053-groups-creation
+
+- name: Creating Group
+  ansible.builtin.group:
+    name: "{{ group_meta.name }}"
+    state: present
+    system: yes
+  loop: "{{ groups_list }}"
+  loop_control:
+    loop_var: group_meta

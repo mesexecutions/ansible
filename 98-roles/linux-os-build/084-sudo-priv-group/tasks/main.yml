@@ -1,0 +1,20 @@
+---
+# tasks file for 054-sudo-priv-group
+
+- name: Providing SUDO Privileges to {{ group_name.name }}
+  ansible.builtin.template:
+    src: templates/sudo_group.jinja2
+    dest: "/etc/sudoers.d/{{ group_name.name }}"
+  loop: "{{ groups_list }}"
+  loop_control:
+    loop_var: group_name
+
+- name: Set Permissions on SUDO File {{ group_name.name }}
+  ansible.builtin.file:
+    path : "/etc/sudoers.d/{{ group_name.name }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ groups_list }}"
+  loop_control:
+    loop_var: group_name

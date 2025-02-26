@@ -1,0 +1,9 @@
+/var/log/firewalld {
+    weekly
+    missingok
+    rotate 4
+    create 0640 root root
+    copytruncate
+    minsize 1M
+    maxage 365
+}

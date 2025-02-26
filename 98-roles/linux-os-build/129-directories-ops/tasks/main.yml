@@ -1,0 +1,20 @@
+---
+# tasks file for /links/computing/devops_automation/ansible/02_roles/linux-os-build/061-directories-creation
+#
+
+- name: Create Directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ directories_to_create }}"
+  when: ops == "create"
+
+- name: Delete Directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ directories_to_delete }}"
+  when: ops == "delete"

@@ -1,0 +1,7 @@
+---
+# handlers file for 055-root-enable
+
+- name: restart ssh
+  systemd:
+    name: sshd
+    state: restarted

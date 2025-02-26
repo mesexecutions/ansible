@@ -1,0 +1,27 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/022-ssh-allow-users
+
+- name: Backup SSHD_CONFIG
+  copy:
+    src: "/etc/ssh/sshd_config"
+    dest: "/root/ansible_backup/sshd_config_{{ timestamp.stdout}}"
+    backup: yes
+    remote_src: yes
+
+- name: Update AllowUsers in sshd_config
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?AllowUsers'
+    line: 'AllowUsers admin'
+    state: present
+  notify: restart sshd
+
+- name: Validate If AllowUsers Exists
+  shell:
+    cmd: cat /etc/ssh/sshd_config | grep '^AllowUsers'
+  register: allowusers
+
+- name: Display AllowUsers Configuration
+  debug:
+    msg: "{{ allowusers.stdout }}"

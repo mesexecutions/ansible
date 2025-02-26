@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - /links/computing/devops_automation/ansible/02_roles/linux-os-build/061-directories-creation

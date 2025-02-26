@@ -1,0 +1,10 @@
+/var/log/chrony/*.log {
+    missingok
+    nocreate
+    sharedscripts
+    create 0740 root root
+    postrotate
+        /usr/bin/chronyc cyclelogs > /dev/null 2>&1 || true
+    endscript
+    maxage 365
+}

@@ -1,0 +1,11 @@
+[Unit]
+Description=Service Script that Call External Custom Script
+After=sshd.service vboxadd-service.service fileshare.mount
+
+[Service]
+Type=simple
+ExecStart=/bin/bash "/fileshare/Workspace/My_Work/Experiences/implementations/computing/coding/bash/00_configs/sys_startup/{{ server_name }}.sh"
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

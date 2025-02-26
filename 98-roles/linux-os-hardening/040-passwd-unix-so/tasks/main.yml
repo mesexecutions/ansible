@@ -1,0 +1,11 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/040-passwd-unix-so
+
+- name: Running Bash Script
+  script: scripts/md5.sh
+  register: md5_output
+
+- name: Display MD5 Output
+  debug:
+      msg: "{{ md5_output.stdout_lines }}"
+

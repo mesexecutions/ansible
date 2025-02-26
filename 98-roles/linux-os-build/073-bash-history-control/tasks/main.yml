@@ -1,0 +1,27 @@
+---
+# tasks file for 051-bash-history-control
+
+- name: Adding HISTSIZE, HISTFILESIZE, PROMPT_COMMAND & HISTCONTROL (ROOT)
+  ansible.builtin.lineinfile:
+    path: /root/.bashrc
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - 'HISTSIZE=1500'
+    - 'HISTFILESIZE=20000'
+    - 'PROMPT_COMMAND="history -a"'
+    - 'HISTCONTROL=ignorespace:erasedups'
+    - 'HISTIGNORE=history:help'
+
+
+- name: Adding HISTSIZE, HISTFILESIZE, PROMPT_COMMAND & HISTCONTROL (LINADMIN)  # Combine This Task for ROOT and LINAMDIN
+  ansible.builtin.lineinfile:
+    path: /home/linadmin/.bashrc
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - 'HISTSIZE=3000'
+    - 'HISTFILESIZE=40000'
+    - 'PROMPT_COMMAND="history -a"'
+    - 'HISTCONTROL=ignorespace:erasedups'
+    - 'HISTIGNORE=history:help'

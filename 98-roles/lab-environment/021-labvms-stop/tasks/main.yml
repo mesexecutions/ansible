@@ -1,0 +1,12 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/032-stop-vwvms
+#
+- name: Stop the VM's
+  ansible.builtin.shell:
+    cmd: "vmrun -T ws stop {{ vmpath }} soft"
+  loop: "{{ vmx_paths }}"
+  loop_control:
+    loop_var: vmpath
+    pause: "{{ sleep_time }}"
+  async: 300
+  poll: 0

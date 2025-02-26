@@ -1,0 +1,41 @@
+---
+# tasks file for /links/ansible/98-roles/linux-os-apps/004-python-environment
+
+# - name: Install Multiple Versions of Python
+#   ansible.builtin.dnf:
+#     name: "{{ python['versions'] }}"
+#     state: present
+
+
+# - name: Install PIP using Python Binary
+#   ansible.builtin.shell:
+#     cmd: "{{ python_version }} -m ensurepip"
+#   with_items: 
+#     - "{{ python['versions'] }}"
+#   loop_control:
+#     loop_var: python_version
+
+
+# - name: Installing VIRTUALENV Module 
+#   ansible.builtin.shell:
+#     cmd: "{{ python_version }} -m pip install virtualenv"
+#   with_items: 
+#     - "{{ python['versions'] }}"
+#   loop_control:
+#     loop_var: python_version
+
+# - name: Create Virtual Environments 
+#   ansible.builtin.shell:
+#     cmd: "{{ virtualenv_name.0 }} -m virtualenv {{ python['base_path'] }}/{{ virtualenv_name.1 }} --system-site-packages"
+#   with_items: "{{ python['virtual_environments'] }}"
+#   loop_control: 
+#     loop_var: virtualenv_name
+#   become_user: linadmin
+
+
+- name: Display 
+  ansible.builtin.debug:
+    msg: "{{ virtualenv.key }} > {{ virtualenv.value }}" 
+  loop: "{{ python['virtual_environments'] | dict2items }}"
+  loop_control:
+    loop_var: virtualenv

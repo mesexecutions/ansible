@@ -1,0 +1,26 @@
+---
+# tasks file for 056-root-disable
+
+- name: Disable ROOT Account via SSH on RHEL 8
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: "PermitRootLogin no"
+    state: present
+    backup: yes
+  notify:
+    - restart ssh
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8'
+
+- name: Disable ROOT Account via SSH on RHEL 9
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
+    regexp: '^PermitRootLogin'
+    line: "PermitRootLogin no"
+    state: present
+    backup: yes
+  notify:
+    - restart ssh
+  when: >
+        ( ansible_os_family == 'RedHat' and ansible_distribution_major_version == '9') or
+        ( ansible_distribution == 'Fedora' and ansible_distribution_major_version == '41')

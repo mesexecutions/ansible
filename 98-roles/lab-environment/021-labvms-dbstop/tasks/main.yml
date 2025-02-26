@@ -1,0 +1,8 @@
+---
+# tasks file for 021-labvms-dbstop
+
+- name: Stop the DB Service
+  ansible.builtin.systemd:
+    name: postgresql
+    state: stopped
+  when: "'db' in ansible_hostname"

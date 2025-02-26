@@ -1,0 +1,10 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/026-filter-vmxpaths
+#
+- name: Fetch VM's (vm_list) Data from vwvms Dict 
+  ansible.builtin.set_fact:
+    filtered_vms: "{{ vwvms | selectattr('vmname', 'in', vm_list) | list }}"
+
+- name: Create List of .vmx Paths
+  ansible.builtin.set_fact:
+    vmx_paths: "{{ filtered_vms | map(attribute='path') | list }}"

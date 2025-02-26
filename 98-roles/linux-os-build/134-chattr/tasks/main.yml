@@ -1,0 +1,19 @@
+---
+# tasks file for 058-chattr
+
+- name: Unmount Filesystem
+  ansible.posix.mount:
+    path: "{{ mount_path }}"
+    state: unmounted
+  with_items: 
+    - "{{ immutable_dirs }}"
+  loop_control:
+    loop_var: mount_path
+
+- name: Apply Immutable Flag on Directories
+  ansible.builtin.shell:
+    cmd: "chattr +i {{ mount_path }}"
+  with_items:
+    - "{{ immutable_dirs }}"
+  loop_control:
+    loop_var: mount_path

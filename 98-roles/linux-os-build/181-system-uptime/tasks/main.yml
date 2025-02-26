@@ -1,0 +1,7 @@
+---
+# tasks file for /links/ansible_roles/linux-os-build/008-system-uptime
+#
+
+- name: Display System Uptime
+  ansible.builtin.debug:
+    msg: "{{ ansible_uptime_seconds }} SECONDS"

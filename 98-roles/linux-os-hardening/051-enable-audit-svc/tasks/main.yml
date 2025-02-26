@@ -1,0 +1,8 @@
+---
+# tasks file for ../../00_roles/linux-os-build/051-enable-audit-svc
+
+- name: Ensure auditd service is enabled
+  service:
+    name: auditd
+    state: started
+    enabled: yes

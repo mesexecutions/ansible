@@ -1,0 +1,7 @@
+---
+
+- name: Loop through Multiple Network Configurations defined in interfaces Variable
+  ansible.builtin.include_tasks: network-interface-configuration.yml
+  loop: "{{ interfaces }}"
+  loop_control:
+    loop_var: interface

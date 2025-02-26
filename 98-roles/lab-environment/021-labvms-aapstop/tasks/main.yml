@@ -1,0 +1,23 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/aap-service-stop
+
+
+- name: Fetch if Tower or AAP
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - /usr/bin/ansible-tower-service
+    - /usr/bin/automation-controller-service
+  register: tower_binary
+  when: "'con' in ansible_hostname"
+
+- name: Set Fact for Binary
+  ansible.builtin.set_fact:
+    binary: "{{ item.stat.path }}"
+  loop: "{{ tower_binary.results }}"
+  when: "'con' in ansible_hostname and item.stat.exists == true"
+
+- name: Stop the Ansible Automation Controller Service
+  ansible.builtin.shell:
+    cmd: "sudo {{ binary }} stop"
+  when: "'con' not in ansible_hostname"

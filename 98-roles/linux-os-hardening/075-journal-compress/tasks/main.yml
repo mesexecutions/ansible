@@ -1,0 +1,10 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/075-journal-logs-compress
+
+- name: Ensure journald is configured to compress large log files
+  lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: '^\s*\\?Compress\s*'
+    line: 'Compress=yes'
+    state: present
+    backup: yes

@@ -1,0 +1,30 @@
+{
+ "collection_info": {
+  "namespace": "rahans",
+  "name": "dataops",
+  "version": "1.0.0",
+  "authors": [
+   "RHANSP"
+  ],
+  "readme": "README.md",
+  "tags": [],
+  "description": "Collection for Processing Text Data",
+  "license": [
+   "GPL-2.0-or-later"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "http://example.com/repository",
+  "documentation": "http://docs.example.com",
+  "homepage": "http://example.com",
+  "issues": "http://example.com/issue/tracker"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "5f951fa557e02ed057b57ed8e01d69c317f256b13c1f0bbe4b870689f1f2c804",
+  "format": 1
+ },
+ "format": 1
+}

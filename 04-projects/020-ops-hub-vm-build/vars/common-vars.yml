@@ -1,0 +1,60 @@
+---
+
+backup_directory: '/var/log/ansible_backup'    # Don't Include / at the END of the Path
+
+symbolic_links_to_create:
+
+    - { 'target': '/storage/my_drive/taskhub/my_content/computing/coding/python/', 'link_name': '/links/python' }
+    - { 'target': '/storage/my_drive/taskhub/my_content/computing/devops_automation/ansible/', 'link_name': '/links/ansible' }
+    - { 'target': '/storage/my_drive/taskhub/my_content/computing/devops_automation/ansible/98-roles/', 'link_name': '/links/ansible_roles' }
+
+symbolic_links_to_delete:
+
+    # - { 'target': 'link', 'link_name': '/links/PastLinkNameHerecd' }
+
+directories_to_create:
+
+  - path: /links
+    owner: 'linadmin'
+    group: 'superadmins'
+    mode: '0755'
+
+  - path: /workspace
+    owner: 'linadmin'
+    group: 'superadmins'
+    mode: '0755'
+
+  # - path: /home/linadmin/pyvenv
+  #   owner: 'linadmin'
+  #   group: 'superadmins'
+  #   mode: '0755'
+
+  - path: "{{ backup_directory }}{{ timestamp.stdout }}/"
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+directories_to_delete:
+
+    - path: /fileshare 
+    - path: /etc/sysconfig/network-scripts/bkp-ifcfg-enp0s3
+    - path: /etc/sysconfig/network-scripts/bkp-ifcfg-enp0s8
+  
+groups_list:
+
+  - name: 'superadmins'
+
+users_list:
+
+  - name: 'linadmin'
+    group: 'superadmins'
+    comment: 'Linux Administrator Account'
+
+  - name: 'linadmin'
+    group: 'vboxsf'
+    comment: 'Linux Administrator Account'
+
+immutable_dirs:
+
+  - /storage
+

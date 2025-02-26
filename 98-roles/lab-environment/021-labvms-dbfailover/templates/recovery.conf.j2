@@ -1,0 +1,2 @@
+standby_mode = 'on'
+primary_conninfo = 'user=repuser password=ASDasd123 host={{ hostvars[tower_db_future_host]['ansible_ens192']['ipv4']['address'] }} port=5432 sslmode=prefer sslcompression=0 gssencmode=prefer krbsrvname=postgres target_session_attrs=any'

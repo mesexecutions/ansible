@@ -1,0 +1,17 @@
+---
+# tasks file for 055-users-creation
+
+- name: CREATE USER > "{{ user_meta.name }}"
+  ansible.builtin.user:
+    name: "{{ user_meta.name }}"
+    state: present
+    home: /home/{{ user_meta.name }}
+    password: "{{ {{ password_to_enter }} | password_hash('sha512') }}"
+    update_password: on_create
+    shell: /bin/bash
+    group: "{{ user_meta.group }}"
+    comment: "{{ user_meta.comment }}"
+    append: "yes"
+  loop: "{{ users_list }}"
+  loop_control:
+    loop_var: user_meta

@@ -1,0 +1,63 @@
+---
+# tasks file for ../../00_roles/linux-os-build/004-system-files-bkp
+
+- name: Backup System Files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    remote_src: true
+    dest: "{{ backup_directory }}/{{ timestamp.stdout }}/"
+    mode: 0600
+    owner: root
+    group: root
+    force: yes
+  loop:
+    - '/etc/fstab'
+    - '/etc/hosts'
+    - '/etc/ssh/sshd_config'
+    - '/etc/passwd'
+    - '/etc/shadow'
+    - '/etc/group'
+    - '/etc/sudoers'
+
+- name: Current Mounted Filesystems
+  ansible.builtin.shell:
+    cmd: mount
+  register: mounted_fs
+
+- name: Find the List of Directories in ROOT
+  ansible.builtin.shell: 
+    cmd: find / -type d -not -path "/storage*"
+  register: directories_found
+
+- name: Packages Installed
+  ansible.builtin.shell:
+    cmd: rpm -qa
+  register: installed_packages
+
+- name: Create a Output JSON File
+  ansible.builtin.file:
+    path: "{{ backup_directory }}/{{timestamp.stdout}}/{{ ansible_hostname }}.json"
+    state: touch
+  register: bkp_json_outfile
+
+- name: Combine all Registgered Values into Dictionary 
+  ansible.builtin.set_fact:
+    combined_dict:
+      directories: "{{ directories_found.stdout_lines }}"
+      mounts: "{{ mounted_fs.stdout_lines }}"
+      packages: "{{ installed_packages.stdout_lines }}"
+
+- name: Write the Combined Dictionary to JSON
+  ansible.builtin.copy:
+    content: "{[ combined_dict | to_nice_json ]}"
+    dest: "{{ bkp_json_outfile.dest }}"  
+
+- name: Generate SOS Report
+  ansible.builtin.shell: 
+    cmd: 'sos report --case-id BKPONLY --batch'
+  when: ansible_distribution == "Fedora" and sos_backup == "yes"  
+
+- name: Move the SOS Report to "{{ backup_directory }}/{{ timestamp.stdout }}/"
+  ansible.builtin.shell:
+    cmd: "mv /var/tmp/sosreport* {{ backup_directory }}/{{ timestamp.stdout }}/"
+  when: ansible_distribution == "Fedora" and sos_backup == "yes"  

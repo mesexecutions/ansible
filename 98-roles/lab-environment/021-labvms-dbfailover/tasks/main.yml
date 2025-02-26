@@ -1,0 +1,109 @@
+---
+# tasks file for 021-labvms-dbfailover
+
+
+### STOP THE SERVICE ON AAP
+
+- name: Include Role to Stop the Ansible Automation Service
+  ansible.builtin.include_role:
+    name: 021-labvms-aapstop
+
+### STOPPING POSTGRESQL SERVICE ON MASTER DB HOST
+
+- name: Stop the Postgres Service on Current Active Host "{{ current_master_node }}"
+  ansible.builtin.systemd:
+    name: postgresql
+    state: stopped
+  delegate_to: "{{ current_master_node }}"
+  run_once: true
+
+
+### MAKING REPLICA AS MASTER. FAILING OVER
+
+- name: Failing Over to DB "{{ current_slave_node }}"
+  ansible.builtin.shell:
+    cmd: pg_ctl promote -D /var/lib/pgsql/data/
+  run_once: true
+  delegate_to: "{{ current_slave_node }}"
+  become_user: postgres
+  register: promote_status
+  ignore_errors: true
+
+- name: Confirm Promote Status
+  ansible.builtin.debug:
+    msg: "{{ promote_status.stdout_lines }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Deleting recovery.done on Slave Node
+  ansible.builtin.file:
+    path: /var/lib/pgsql/data/recovery.done
+    state: absent
+  become_user: postgres
+  run_once: true
+  delegate_to: "{{ current_slave_node }}"
+
+- name: Restart the Postgres Service on Future Host
+  ansible.builtin.systemd:
+    name: postgresql
+    state: restarted
+  delegate_to: "{{ current_slave_node }}"
+  run_once: true
+
+### UPDATE tower_db_future_host on TOWER
+
+- name: Update Tower postgres.py
+  lineinfile:
+    dest: /etc/tower/conf.d/postgres.py
+    regexp: "^(.*'HOST':)"
+    line: "\\1 '{{ current_slave_node }}.orktion.net',"
+    backrefs: yes
+  when: "'db' not in ansible_hostname"
+
+### MAKING tower_db_current_host as REPLICA
+
+- name: Remove PGSQL DATA Contents on "{{ current_master_node }}"
+  ansible.builtin.shell:
+    cmd: rm -fR /var/lib/pgsql/data/*
+  run_once: true
+  delegate_to: "{{ current_master_node }}"
+  become_user: postgres
+
+- name: Pause for 1 Mintue
+  ansible.builtin.include_role:
+    name: 021-labvms-pause
+  vars:
+    pause_minutes: 3
+
+- name: Import DB Data from "{{ current_slave_node }}" to "{{ current_master_node }}"
+  ansible.builtin.shell:
+    cmd: PGPASSWORD={{ pg_db_password}} pg_basebackup -R -X stream -D /var/lib/pgsql/data/ -h {{ current_slave_node }}.orktion.net -U repuser
+  run_once: true
+  delegate_to: "{{ current_master_node }}"
+  become_user: postgres
+
+- name: Start the Postgres Service on Current Host as REPLICA
+  ansible.builtin.systemd:
+    name: postgresql
+    state: started
+  delegate_to: "{{ current_master_node }}"
+  run_once: true
+
+### VALIDATION
+
+- name: Validate the Postgres Settings in /etc/tower/conf.d/postgres.py
+  ansible.builtin.shell:
+    cmd: cat /etc/tower/conf.d/postgres.py | grep HOST
+  register: tower_db_settings
+  when: "'db' not in ansible_hostname"
+
+- name: Current Tower Postgres Settings
+  ansible.builtin.debug:
+    msg: "{{ tower_db_settings.stdout }}"
+  when: "'db' not in ansible_hostname"
+
+### START THE SERVICE ON AAP
+
+- name: Include Role to Stop the Ansible Automation Service
+  ansible.builtin.include_role:
+    name: 021-labvms-aapstart

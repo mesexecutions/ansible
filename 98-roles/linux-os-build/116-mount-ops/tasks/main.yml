@@ -1,0 +1,48 @@
+---
+# tasks file for /links/ansible_roles/linux-os-build/026-iso-mount
+
+# - name: Fetch Device List from mount_devices_list
+#   ansible.builtin.set_fact:
+#     filtered_devices: "{{ mount_devices_list | selectattr('name', 'in', devices_to_mount) | list }}"
+#   delegate_to: localhost
+#   run_once: true
+
+# # ---------> MOUNT ISO is Already Creating Directory
+
+# # - name: Create Directory for Mount Device
+# #   ansible.builtin.file:
+# #     path: "{{ item.mount_dir }}{{ item.name }}"
+# #     state: directory
+# #   loop: "{{ filtered_devices }}"
+# #   when: "ops == 'mountpath'"
+
+# - name: Mount ISO
+#   ansible.posix.mount:
+#     path: "{{ item.mount_dir }}{{ item.name }}"
+#     src: "{{ item.mount_path }}"
+#     opts: loop
+#     fstype: iso9660
+#     state: mounted
+#   when: "'.iso' in item.mount_path and ops == 'mountpath'"
+#   loop: "{{ filtered_devices }}"
+
+# - name: Unmount ISO
+#   ansible.posix.mount:
+#     path: "{{ item.mount_dir }}{{ item.name }}"
+#     state: absent
+#   loop: "{{ filtered_devices }}"
+#   when: "ops == 'unmountpath'"
+
+- name: Umount File System
+  ansible.posix.mount:
+    path: "{{ item }}"
+    state: unmounted
+  with_items: "{{ dir_list }}"
+  when: "ops == 'unmount'"
+
+- name: Mount File System
+  ansible.posix.mount:
+    path: "{{ item }}"
+    state: mounted
+  with_items: "{{ dir_list }}"
+  when: "ops == 'mount'"

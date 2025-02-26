@@ -1,0 +1,9 @@
+---
+# tasks file for roles/reboot-server
+
+- name: Reboot Server
+  ansible.builtin.shell: "sleep 1; sudo init 6 &"
+  args:
+    executable: /bin/bash
+  async: 100
+  poll: 0

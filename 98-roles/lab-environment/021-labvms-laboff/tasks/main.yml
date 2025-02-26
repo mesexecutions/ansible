@@ -1,0 +1,19 @@
+---
+# tasks file for roles/shutdown-server
+
+- name: Shutdown
+  ansible.builtin.shell:
+    cmd: init 0
+  args:
+    executable: /bin/bash
+  become: true
+  async: 100
+  poll: 0
+
+- name: Wait for GO DOWN
+  local_action:
+    module: wait_for
+    host: "{{ ansible_host }}"
+    port: 22
+    delay: 15
+    state: stopped 

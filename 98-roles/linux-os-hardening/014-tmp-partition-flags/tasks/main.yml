@@ -1,0 +1,11 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/014-tmp-partition-flags
+
+- name: Check if /tmp having Required Flags
+  shell:
+    cmd: cat /etc/fstab | grep /tmp
+  register: fstab_response
+
+- name: Display /tmp Flags
+  debug:
+    msg: "{{ fstab_response.stdout_lines }}"

@@ -1,0 +1,31 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/033-fetch-snapshots
+#
+- name: Initialize the List
+  ansible.builtin.set_fact:
+    vms_snapshot_list: []
+
+
+- name: Fetch Snapshot on the VM
+  ansible.builtin.shell:
+    cmd: "vmrun listSnapshots {{ vmpath }}"
+  loop: "{{ vmx_paths }}"
+  loop_control:
+    loop_var: vmpath
+    pause: "{{ sleep_time }}"
+  register: snapshotlist
+
+- name: List the Snapshots
+  ansible.builtin.set_fact:
+    vms_snapshot_list: "{{ vms_snapshot_list + vmmeta.stdout_lines }}"
+  loop: "{{ snapshotlist.results }}"
+  loop_control:
+    loop_var: vmmeta
+
+- name: Remove the Duplicates in the List
+  ansible.builtin.set_fact:
+    vms_snapshot_list: "{{ vms_snapshot_list | unique | sort }}"
+
+- name: List the Unique Snapshots
+  ansible.builtin.debug:
+    msg: "{{ vms_snapshot_list }}"

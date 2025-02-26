@@ -1,0 +1,11 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/028-var-log-perm-fix
+
+- name: Gather Current Permissions on /var/log
+  shell:
+      cmd: "ls -larth /var/log/* > /root/ansible_backup/var_log_perms_{{ timestamp.stdout }}"
+
+
+- name: Setting Permissions on /var/log
+  shell:
+    cmd: find /var/log/ -type f -exec chmod g-wx,o-rwx "{}" + -o -type d -exec chmod g-w,o-rwx "{}" +

@@ -1,0 +1,50 @@
+---
+# tasks file for roles/redhat-cdn-register
+
+- name: Fetch Current Red Hat release
+  ansible.builtin.shell:
+    cmd: sudo subscription-manager release --show
+  register: current_release
+  ignore_errors: true
+
+- name: Register and Subscribe to Pools
+  community.general.redhat_subscription:
+    state: present
+    username: "{{ redhat_registration['redhat_username'] }}"
+    password: "{{ redhat_registration['redhat_password'] }}"
+    release: "{{ redhat_registration['rhel_update_till_release'] }}"
+    force_register: "true"
+    pool_ids: "{{ redhat_registration['poolids'] }}"
+  when: ansible_os_family == 'RedHat' and register_status == 'register' and autoattach != "yes"
+
+
+- name: Register and Auto Attach
+  community.general.redhat_subscription:
+    state: present
+    username: "{{ redhat_registration['redhat_username'] }}"
+    password: "{{ redhat_registration['redhat_password'] }}"
+    release: "{{ redhat_registration['rhel_update_till_release'] }}"
+    auto_attach: true
+    force_register: true
+  when: ansible_os_family == 'RedHat' and register_status == 'register' and autoattach == "yes"
+
+
+- name: Degister the Server from Red Hat CDN
+  community.general.redhat_subscription:
+    state: absent
+    username: "{{ redhat_registration['redhat_username'] }}"
+    password: "{{ redhat_registration['redhat_password'] }}"
+  when: ansible_os_family == 'RedHat' and register_status == 'deregister'
+  ignore_errors: true
+
+
+- name: Fetch Updated Red Hat release
+  ansible.builtin.shell:
+    cmd: sudo subscription-manager release --show
+  register: updated_release
+  ignore_errors: true
+
+- name: Display Current Red Hat Release
+  ansible.builtin.debug:
+    msg: "CURRENT: {{ current_release.stdout }}, UPDATED: {{ updated_release.stdout }}"
+  ignore_errors: true

@@ -1,0 +1,12 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/030-delete-vwsnapshot
+#
+- name: Delete Snapshot of th VM's
+  ansible.builtin.shell:
+    cmd: "vmrun -T ws deleteSnapshot {{ vmpath }} {{ snapshot_name_to_delete }}"
+  loop: "{{ vmx_paths }}"
+  loop_control:
+    loop_var: vmpath
+    pause: "{{ sleep_time }}"
+  async: 300
+  poll: 0

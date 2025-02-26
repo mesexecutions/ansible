@@ -1,0 +1,6 @@
+---
+# tasks file for roles/set-hostname
+
+- name: Set HOSTNAME
+  ansible.builtin.hostname:
+    name: "{{ sysinfo['servername'] }}"

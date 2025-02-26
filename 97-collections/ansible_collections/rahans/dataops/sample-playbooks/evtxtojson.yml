@@ -1,0 +1,17 @@
+---
+
+- name: Playbook to Demonstrate Module evtxtojson
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Process the .evtx File
+      rahans.dataops.evtxtojson:
+         evtx_filepath: 'artifacts/Security_Trim.evtx'
+      register: evtx_response
+
+    - name: Display evtx_response
+      ansible.builtin.debug:
+        var: evtx_response

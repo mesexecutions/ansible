@@ -1,0 +1,6 @@
+---
+# tasks file for /links/computing/devops_automation/ansible/02_roles/linux-os-hardening/064-selinux-ops
+#
+- name: Disable SELINUX
+  selinux:
+    state: disabled

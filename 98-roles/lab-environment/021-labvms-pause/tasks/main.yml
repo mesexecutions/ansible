@@ -1,0 +1,8 @@
+---
+# tasks file for 021-labvms-pause
+#
+- name: PAUSE
+  ansible.builtin.pause:
+    minutes: "{{ pause_minutes | default(2) }}"
+  run_once: true
+  delegate_to: localhost

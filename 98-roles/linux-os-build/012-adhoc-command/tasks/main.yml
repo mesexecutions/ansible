@@ -1,0 +1,6 @@
+---
+# tasks file for 032-adhoc-command
+
+- name: Running List of Adhoc Commands
+  ansible.builtin.shell: "{{ item }}"
+  with_items: "{{ adhoc_cmds }}"

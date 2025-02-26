@@ -1,0 +1,8 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/021-labvms-dbstart
+
+- name: Start the DB Service
+  ansible.builtin.systemd:
+    name: postgresql
+    state: started
+  when: "'db' in ansible_hostname"

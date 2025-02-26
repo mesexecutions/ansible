@@ -1,0 +1,10 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/088-sysctl-parms
+
+- name: Copy SYSCTL Parameters 
+  copy:
+    src: files/72-os-hardening.conf
+    dest: /etc/sysctl.d/
+    owner: root
+    group: root
+    mode: 0644

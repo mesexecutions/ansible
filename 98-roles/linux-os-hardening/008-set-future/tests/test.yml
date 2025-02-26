@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ../../00_roles/linux-os-hardening/008-set-future

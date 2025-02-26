@@ -1,0 +1,10 @@
+---
+# tasks file for /links/computing/devops_automation/ansible/02_roles/linux-os-build/075-custom-startup-service
+
+- name: Copy Custom Startup Service File
+  ansible.builtin.template:
+    src: "templates/{{ custom_service_jinja_template }}"
+    dest: "/usr/lib/systemd/system/custom-startup.service"
+    owner: root
+    group: root
+    mode: 0550

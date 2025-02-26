@@ -1,0 +1,26 @@
+---
+# tasks file for /links/ansible_roles/linux-os-build/034-local-iso-repo
+
+- name: Filter Repos
+  ansible.builtin.set_fact:
+    filtered_repos: "{{ repo_list | selectattr('name', 'in', repos_to_configure) | list }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Create/Disable Repository
+  ansible.builtin.yum_repository:
+    name: "{{ repo.name }}"
+    description: "Packages from {{ repo.name }}"
+    baseurl: "{{ repo.baseurl }}"
+    gpgcheck: yes
+    file: "{{ repo.filename }}"
+    gpgkey: "{{ repo.gpgkey }}"
+    cost: "{{ repo.cost | default(20) }}"
+    enabled: "{{ ops }}"
+  loop: "{{ filtered_repos }}"
+  loop_control:
+    loop_var: repo
+
+- name: Refresh Repositories
+  ansible.builtin.shell:
+      cmd: "sudo yum repolist"

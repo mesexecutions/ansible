@@ -1,0 +1,10 @@
+---
+# tasks file for ../../00_roles/linux-os-hardening/065-ssh-banner
+
+- name: Ensure SSH warning banner is configured
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^\s*Banner\s*'
+    line: 'Banner /etc/issue.net'
+    state: present
+    backup: yes

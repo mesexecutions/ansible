@@ -1,0 +1,16 @@
+---
+# tasks file for 009-unset-future
+
+
+- name: Unset FUTURE or FIPS
+  shell:
+    cmd: update-crypto-policies --set DEFAULT
+
+- name: Reading File /etc/crypto-policies/config
+  shell:
+    cmd: cat /etc/crypto-policies/config
+  register: crypto_value
+
+- name: Display Current Cyrpto Policy
+  debug:
+    var: crypto_value.stdout

@@ -1,0 +1,12 @@
+---
+# tasks file for /links/ansible_roles/lab-environment/027-start-vwvms
+#
+- name: Start the VM's
+  ansible.builtin.shell:
+    cmd: "vmrun -T ws start {{ vmpath }} nogui"
+  loop: "{{ vmx_paths }}"
+  loop_control:
+    loop_var: vmpath
+    pause: "{{ sleep_time }}"
+  async: 300
+  poll: 0
